@@ -5,6 +5,7 @@ import { Card, CardImg, CardText, CardBody,
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
 
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
@@ -13,7 +14,7 @@ function RenderDish({dish}) {
 	if (dish != null)
 		return(
 			<Card>
-				<CardImg top src={dish.image} alt={dish.name} />
+				<CardImg top src={baseUrl + dish.image} alt={dish.name} />
 				<CardBody>
 					<CardTitle><h6>{dish.name}</h6></CardTitle>
 					<CardText>{dish.description}</CardText>
@@ -70,9 +71,10 @@ class CommentForm extends Component {
         });
 	  }
 	  
-	handleSubmit(values) {
-		this.toggleModal();
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+    handleSubmit(values) {
+        this.toggleModal();
+        const rating = (values.rating==null) ? 1 : values.rating;
+        this.props.addComment(this.props.dishId, rating, values.author, values.comment);
     }
 
     render() {
